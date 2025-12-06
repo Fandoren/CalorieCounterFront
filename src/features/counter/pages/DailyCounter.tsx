@@ -16,6 +16,7 @@ import { MealList } from "../components/MealList";
 import { MealSummary } from "../components/MealSummary";
 import { addMeal, deleteMeal, fetchTodayMeals } from "../api";
 import DeleteMealDialog from "../components/DeleteMealDialog";
+import Loader from "@/components/common/loader/Loader";
 
 export default function DailyCounter() {
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -23,6 +24,7 @@ export default function DailyCounter() {
   const [editingMeal, setEditingMeal] = useState<Meal | null>(null);
   const [mealToDelete, setMealToDelete] = useState<Meal | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const totalCalories = meals.reduce(
     (sum, meal) =>
@@ -41,9 +43,11 @@ export default function DailyCounter() {
   }, []);
 
   async function loadMeals() {
+    setLoading(true);
     try {
       const data = await fetchTodayMeals();
       setMeals(data);
+      setLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -109,20 +113,28 @@ export default function DailyCounter() {
         </Dialog>
       </div>
 
-      <h1 className="text-2xl font-bold">Мой рацион за сегодня</h1>
+      <h1 className="flex justify-center text-2xl font-bold">Мой рацион за сегодня</h1>
 
-      <MealList
-        meals={meals}
-        onEdit={setEditingMeal}
-        onDelete={openDeleteDialog} // теперь открывает диалог, а не сразу удаляет
-      />
+      {loading ? (
+        <div className="flex justify-center items-center flex-1 text-muted-foreground">
+          <Loader />
+        </div>
+      ) : (
+        <>
+          <MealList
+            meals={meals}
+            onEdit={setEditingMeal}
+            onDelete={openDeleteDialog}
+          />
 
-      <div className="flex justify-center mt-4">
-        <MealSummary
-          totalCalories={totalCalories}
-          hasMeals={meals.length > 0}
-        />
-      </div>
+          <div className="flex justify-center mt-4">
+            <MealSummary
+              totalCalories={totalCalories}
+              hasMeals={meals.length > 0}
+            />
+          </div>
+        </>
+      )}
 
       <DeleteMealDialog
         mealToDelete={mealToDelete!}

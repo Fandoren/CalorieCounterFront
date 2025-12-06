@@ -7,6 +7,7 @@ import "dayjs/locale/ru";
 import HistoryCalendarDay from "./HistoryCalendarDay";
 import { fetchMonthData } from "../api";
 import { HistoryCalendarData } from "../types";
+import Loader from "@/components/common/loader/Loader";
 
 dayjs.locale("ru");
 
@@ -88,7 +89,7 @@ export default function HistoryCalendar() {
       {/* Индикатор загрузки */}
       {loading ? (
         <div className="flex justify-center items-center flex-1 text-muted-foreground">
-          Загрузка...
+          <Loader/>
         </div>
       ) : (
         <>
@@ -106,10 +107,7 @@ export default function HistoryCalendar() {
             {days.map((d) => {
               const isCurrentMonth = d.month() === currentMonth.month();
               const isToday = d.isSame(dayjs(), "day");
-
-              let currentDay = d.day();
               
-
               // 👇 ищем данные по этому дню
               const dayData = historyData.find(
                 (entry) => {

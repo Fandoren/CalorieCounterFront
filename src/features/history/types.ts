@@ -12,5 +12,4 @@ export interface HistoryCalendarDayProps {
 export interface HistoryCalendarData {
   day: number;
   totalCalories: number;
-  meals: Meal[];
 }
