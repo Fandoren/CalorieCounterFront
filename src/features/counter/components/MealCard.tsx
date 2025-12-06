@@ -4,17 +4,21 @@ import { Pencil, Trash } from "lucide-react";
 import { MealCardProps } from "../types";
 
 export function MealCard({
+  year,
+  month,
+  day,
   mealTime,
   name,
   products,
   onEdit,
   onDelete,
 }: MealCardProps) {
+  const dateStr = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${year}`;
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-lg font-semibold">
-          {mealTime} – {name}
+          {dateStr} {mealTime} – {name}
         </CardTitle>
 
         <div className="flex items-center gap-1">

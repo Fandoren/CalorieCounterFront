@@ -1,3 +1,5 @@
+import HistoryCalendar from "@/features/history/components/HistoryCalendar";
+
 export default function History() {
-  return <h1 className="p-4 text-2xl font-bold">История</h1>
+  return <HistoryCalendar />
 }

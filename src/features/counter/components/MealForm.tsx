@@ -1,7 +1,7 @@
+import { calcTotalCalories } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { calcTotalCalories, getCurrentLocalTime } from "@/lib/utils";
 import { MealFormData, MealFormProps, MealProduct } from "../types";
 import { MealInfoFields } from "./MealInfoFields";
 import { MealProductList } from "./MealProductList";
@@ -13,10 +13,13 @@ export default function MealForm({
   onClose,
   initialData,
 }: MealFormProps & { initialData?: MealFormData }) {
+  const now = new Date();
   const [formData, setFormData] = useState<MealFormData>(
     initialData || {
-      mealDate: new Date().toISOString().slice(0, 10),
-      mealTime: getCurrentLocalTime(),
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      day: now.getDate(),
+      mealTime: `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`,
       name: "",
       products: [],
     }
@@ -49,7 +52,7 @@ export default function MealForm({
 
   return (
     <div className="max-w-lg">
-      <MealInfoFields formData={formData} setFormData={setFormData} />
+  <MealInfoFields formData={formData} setFormData={setFormData} />
 
       <MealProductList products={formData.products} onRemove={removeProduct} />
 

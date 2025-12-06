@@ -95,8 +95,10 @@ export default function DailyCounter() {
               initialData={
                 editingMeal
                   ? {
+                      year: editingMeal.year,
+                      month: editingMeal.month,
+                      day: editingMeal.day,
                       mealTime: editingMeal.mealTime,
-                      mealDate: editingMeal.mealDate,
                       name: editingMeal.name,
                       products: editingMeal.products,
                     }

@@ -3,7 +3,9 @@ import { Product } from "../products/types"
 // типы для еды
 export interface Meal {
   id: number
-  mealDate: string // YYYY-MM-DD
+  year: number
+  month: number
+  day: number
   mealTime: string // HH:mm
   name: string // например "Завтрак"
   products: MealProduct[]
@@ -11,7 +13,9 @@ export interface Meal {
 
 export interface MealFormData {
   id?: number
-  mealDate: string
+  year: number
+  month: number
+  day: number
   mealTime: string
   name: string
   products: MealProduct[]

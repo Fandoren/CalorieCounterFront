@@ -26,7 +26,7 @@ export function Navbar() {
                   className={({ isActive }) =>
                     cn(
                       NavigationMenuLink,
-                      "px-4 py-2 transition-colors",
+                      "px-4 py-2 transition-colors text-lg",
                       isActive
                         ? "text-primary font-semibold"
                         : "text-muted-foreground hover:text-foreground"
