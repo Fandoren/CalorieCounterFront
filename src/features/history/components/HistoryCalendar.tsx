@@ -8,6 +8,7 @@ import HistoryCalendarDay from "./HistoryCalendarDay";
 import { fetchMonthData } from "../api";
 import { HistoryCalendarData } from "../types";
 import Loader from "@/components/common/loader/Loader";
+import HistoryDayMealsCard from "./HistoryDayMealsCard";
 
 dayjs.locale("ru");
 
@@ -16,6 +17,8 @@ export default function HistoryCalendar() {
   const [isNextMonthDisabled, setIsNextMonthDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [historyData, setHistoryData] = useState<HistoryCalendarData[]>([]);
+  const [historyDayDialogOpen, setHistoryDayDialogOpen] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<dayjs.Dayjs | null>(null);
 
   const startOfMonth = currentMonth.startOf("month");
   const endOfMonth = currentMonth.endOf("month");
@@ -57,6 +60,11 @@ export default function HistoryCalendar() {
     }
   };
 
+  const openHistoryDayCard = (day: dayjs.Dayjs) => {
+    setSelectedDay(day);
+    setHistoryDayDialogOpen(true);
+  };
+
   // 👇 Загружаем данные при монтировании и смене месяца
   useEffect(() => {
     updateHistoryData();
@@ -65,69 +73,71 @@ export default function HistoryCalendar() {
   const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
   return (
-    <Card className="p-4 w-5/6 mx-auto mt-5 flex flex-col flex-1">
-      {/* Заголовок */}
-      <div className="flex items-center justify-center mb-4">
-        <Button variant="ghost" onClick={handlePrevMonth}>
-          <ChevronLeft className="w-5 h-5" />
-        </Button>
+    <>
+      <Card className="p-4 w-5/6 mx-auto mt-5 flex flex-col flex-1">
+        {/* Заголовок */}
+        <div className="flex items-center justify-center mb-4">
+          <Button variant="ghost" onClick={handlePrevMonth}>
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
 
-        <h2 className="text-lg font-semibold mx-2">
-          {currentMonth.format("MMMM YYYY").charAt(0).toUpperCase() +
-            currentMonth.format("MMMM YYYY").slice(1)}
-        </h2>
+          <h2 className="text-lg font-semibold mx-2">
+            {currentMonth.format("MMMM YYYY").charAt(0).toUpperCase() +
+              currentMonth.format("MMMM YYYY").slice(1)}
+          </h2>
 
-        <Button
-          variant="ghost"
-          onClick={handleNextMonth}
-          disabled={isNextMonthDisabled}
-        >
-          <ChevronRight className="w-5 h-5" />
-        </Button>
-      </div>
-
-      {/* Индикатор загрузки */}
-      {loading ? (
-        <div className="flex justify-center items-center flex-1 text-muted-foreground">
-          <Loader/>
+          <Button
+            variant="ghost"
+            onClick={handleNextMonth}
+            disabled={isNextMonthDisabled}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </Button>
         </div>
-      ) : (
-        <>
-          {/* Дни недели */}
-          <div className="grid grid-cols-7 text-center font-medium text-md mb-2">
-            {weekDays.map((wd) => (
-              <div key={wd} className="text-primary font-semibold">
-                {wd}
-              </div>
-            ))}
-          </div>
 
-          {/* Дни месяца */}
-          <div className="grid grid-cols-7 place-items-center flex-1">
-            {days.map((d) => {
-              const isCurrentMonth = d.month() === currentMonth.month();
-              const isToday = d.isSame(dayjs(), "day");
-              
-              // 👇 ищем данные по этому дню
-              const dayData = historyData.find(
-                (entry) => {
+        {/* Индикатор загрузки */}
+        {loading ? (
+          <div className="flex justify-center items-center flex-1 text-muted-foreground">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            {/* Дни недели */}
+            <div className="grid grid-cols-7 text-center font-medium text-md mb-2">
+              {weekDays.map((wd) => (
+                <div key={wd} className="text-primary font-semibold">
+                  {wd}
+                </div>
+              ))}
+            </div>
+
+            {/* Дни месяца */}
+            <div className="grid grid-cols-7 place-items-center flex-1">
+              {days.map((d) => {
+                const isCurrentMonth = d.month() === currentMonth.month();
+                const isToday = d.isSame(dayjs(), "day");
+
+                // 👇 ищем данные по этому дню
+                const dayData = historyData.find((entry) => {
                   return entry.day == d.date();
-                }
-              );
+                });
 
-              return (
-                <HistoryCalendarDay
-                  key={d.format("YYYY-MM-DD")}
-                  day={d}
-                  isCurrentMonth={isCurrentMonth}
-                  isToday={isToday}
-                  calories={dayData?.totalCalories ?? 0}
-                />
-              );
-            })}
-          </div>
-        </>
-      )}
-    </Card>
+                return (
+                  <HistoryCalendarDay
+                    key={d.format("YYYY-MM-DD")}
+                    day={d}
+                    onClick={() => openHistoryDayCard(d)}
+                    isCurrentMonth={isCurrentMonth}
+                    isToday={isToday}
+                    calories={dayData?.totalCalories ?? 0}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
+      </Card>
+      {selectedDay && <HistoryDayMealsCard day={selectedDay} open={historyDayDialogOpen} onOpenChange={setHistoryDayDialogOpen}/>}
+    </>
   );
 }

@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { Meal } from "../counter/types";
 
 export interface HistoryCalendarDayProps {
   isCurrentMonth: boolean;
@@ -7,6 +6,7 @@ export interface HistoryCalendarDayProps {
   day: dayjs.Dayjs;
   calories?: number;
   norm?: number;
+  onClick?: () => void;
 }
 
 export interface HistoryCalendarData {

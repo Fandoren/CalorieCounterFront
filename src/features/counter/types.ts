@@ -29,6 +29,7 @@ export interface MealFormProps {
 export interface MealCardProps extends Meal {
   onEdit?: () => void
   onDelete?: () => void
+  isEditMode?: boolean
 }
 
 export interface MealProduct {
@@ -45,8 +46,9 @@ export interface ProductSelectProps {
 
 export interface MealListProps {
   meals: Meal[];
-  onEdit: (meal: Meal) => void;
-  onDelete: (mealToDelete: Meal) => void;
+  onEdit?: (meal: Meal) => void;
+  onDelete?: (mealToDelete: Meal) => void;
+  isEditMode?: boolean;
 }
 
 export interface MealSummapryProps {

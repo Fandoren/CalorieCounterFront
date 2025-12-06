@@ -30,6 +30,16 @@ export async function fetchTodayMeals(): Promise<Meal[]> {
   return res.json();
 }
 
+export async function fetchDayMeals(year: number, month: number, day: number): Promise<Meal[]> {
+  const res = await fetch(`/api/meals/day?year=${year}&month=${month}&day=${day}`);
+  if (!res.ok) throw new Error("Ошибка при загрузке приёмов пищи за день");
+  try {
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
 // Добавить новый приём пищи
 export async function addMeal(data: MealFormData): Promise<Meal> {
   const res = await fetch("/api/meals", {

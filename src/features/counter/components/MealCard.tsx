@@ -12,6 +12,7 @@ export function MealCard({
   products,
   onEdit,
   onDelete,
+  isEditMode,
 }: MealCardProps) {
   const dateStr = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${year}`;
   return (
@@ -22,7 +23,7 @@ export function MealCard({
         </CardTitle>
 
         <div className="flex items-center gap-1">
-          {onEdit && (
+          {onEdit && isEditMode && (
             <Button
               variant="ghost"
               size="icon"
@@ -32,7 +33,7 @@ export function MealCard({
               <Pencil className="h-4 w-4" />
             </Button>
           )}
-          {onDelete && (
+          {onDelete && isEditMode && (
             <Button
               variant="ghost"
               size="icon"

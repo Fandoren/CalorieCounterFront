@@ -125,6 +125,7 @@ export default function DailyCounter() {
             meals={meals}
             onEdit={setEditingMeal}
             onDelete={openDeleteDialog}
+            isEditMode={true}
           />
 
           <div className="flex justify-center mt-4">
