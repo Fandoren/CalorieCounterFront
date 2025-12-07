@@ -14,7 +14,7 @@ import MealForm from "../components/MealForm";
 import { Meal, MealFormData } from "../types";
 import { MealList } from "../components/MealList";
 import { MealSummary } from "../components/MealSummary";
-import { addMeal, deleteMeal, fetchTodayMeals } from "../api";
+import { addMeal, deleteMeal, fetchTodayMeals, updateMeal } from "../api";
 import DeleteMealDialog from "../components/DeleteMealDialog";
 import Loader from "@/components/common/loader/Loader";
 
@@ -55,10 +55,16 @@ export default function DailyCounter() {
 
   async function handleAddMeal(values: MealFormData) {
     try {
-      await addMeal(values);
+      if (editingMeal) {
+        // Обновляем существующий приём пищи
+        await updateMeal(editingMeal.id, values);
+      } else {
+        // Добавляем новый приём пищи
+        await addMeal(values);
+      }
       setOpen(false);
       setEditingMeal(null);
-      await loadMeals(); // Перезагружаем список после добавления
+      await loadMeals(); // Перезагружаем список после добавления/обновления
     } catch (err) {
       console.error(err);
     }
@@ -99,6 +105,7 @@ export default function DailyCounter() {
               initialData={
                 editingMeal
                   ? {
+                      id: editingMeal.id,
                       year: editingMeal.year,
                       month: editingMeal.month,
                       day: editingMeal.day,
@@ -123,7 +130,10 @@ export default function DailyCounter() {
         <>
           <MealList
             meals={meals}
-            onEdit={setEditingMeal}
+            onEdit={(meal) => {
+              setEditingMeal(meal);
+              setOpen(true);
+            }}
             onDelete={openDeleteDialog}
             isEditMode={true}
           />

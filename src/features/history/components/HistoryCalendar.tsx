@@ -137,7 +137,7 @@ export default function HistoryCalendar() {
           </>
         )}
       </Card>
-      {selectedDay && <HistoryDayMealsCard day={selectedDay} open={historyDayDialogOpen} onOpenChange={setHistoryDayDialogOpen}/>}
+      {selectedDay && <HistoryDayMealsCard day={selectedDay} open={historyDayDialogOpen} onOpenChange={setHistoryDayDialogOpen} onDataChanged={updateHistoryData}/>}
     </>
   );
 }

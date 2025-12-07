@@ -8,10 +8,10 @@ import {
 import { Meal } from "../types";
 
 interface DeleteMealDialogProps {
-    mealToDelete: Meal;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onDeleteConfirmed: () => void;
+    readonly mealToDelete: Meal;
+    readonly open: boolean;
+    readonly onOpenChange: (open: boolean) => void;
+    readonly onDeleteConfirmed: () => void;
 }
 
 export default function DeleteMealDialog({

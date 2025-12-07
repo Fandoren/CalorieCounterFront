@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "lucide-react";
 import { MealCardProps } from "../types";
 
-export function MealCard({
+// eslint-disable-next-line react/prop-types,react/prefer-stateless-function
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const MealCard = ({
+  id,
   year,
   month,
   day,
@@ -13,11 +16,11 @@ export function MealCard({
   onEdit,
   onDelete,
   isEditMode,
-}: MealCardProps) {
+}: MealCardProps) => {
   const dateStr = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${year}`;
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between gap-3">
         <CardTitle className="text-lg font-semibold">
           {dateStr} {mealTime} – {name}
         </CardTitle>
@@ -25,9 +28,17 @@ export function MealCard({
         <div className="flex items-center gap-1">
           {onEdit && isEditMode && (
             <Button
-              variant="ghost"
+              variant="secondary"
               size="icon"
-              onClick={onEdit}
+              onClick={() => onEdit({
+                id,
+                year,
+                month,
+                day,
+                mealTime,
+                name,
+                products,
+              })}
               aria-label="Редактировать"
             >
               <Pencil className="h-4 w-4" />
@@ -35,7 +46,7 @@ export function MealCard({
           )}
           {onDelete && isEditMode && (
             <Button
-              variant="ghost"
+              variant="destructive"
               size="icon"
               onClick={onDelete}
               aria-label="Удалить"
@@ -67,4 +78,4 @@ export function MealCard({
       </CardFooter>
     </Card>
   );
-}
+};

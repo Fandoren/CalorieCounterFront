@@ -62,3 +62,16 @@ export async function deleteMeal(id: number): Promise<void> {
     throw new Error("Ошибка при удалении приёма пищи");
   }
 }
+
+// Обновить приём пищи
+export async function updateMeal(id: number, data: MealFormData): Promise<Meal> {
+  const res = await fetch(`/api/meals/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Ошибка при обновлении приёма пищи");
+  return res.json();
+}

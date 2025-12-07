@@ -2,13 +2,13 @@ import { Product } from "../products/types"
 
 // типы для еды
 export interface Meal {
-  id: number
-  year: number
-  month: number
-  day: number
-  mealTime: string // HH:mm
-  name: string // например "Завтрак"
-  products: MealProduct[]
+  readonly id: number
+  readonly year: number
+  readonly month: number
+  readonly day: number
+  readonly mealTime: string // HH:mm
+  readonly name: string // например "Завтрак"
+  readonly products: MealProduct[]
 }
 
 export interface MealFormData {
@@ -24,19 +24,20 @@ export interface MealFormData {
 export interface MealFormProps {
   onSubmit: (data: MealFormData) => void
   onClose: () => void
+  initialData?: MealFormData
 }
 
 export interface MealCardProps extends Meal {
-  onEdit?: () => void
-  onDelete?: () => void
-  isEditMode?: boolean
+  readonly onEdit?: (meal: Meal) => void
+  readonly onDelete?: () => void
+  readonly isEditMode?: boolean
 }
 
 export interface MealProduct {
-    id?: number;
-    grams: number;
-    calories: number;
-    product: Product;
+    readonly id?: number;
+    readonly grams: number;
+    readonly calories: number;
+    readonly product: Product;
 }
 
 export interface ProductSelectProps {
@@ -45,10 +46,10 @@ export interface ProductSelectProps {
 
 
 export interface MealListProps {
-  meals: Meal[];
-  onEdit?: (meal: Meal) => void;
-  onDelete?: (mealToDelete: Meal) => void;
-  isEditMode?: boolean;
+  readonly meals: Meal[];
+  readonly onEdit?: (meal: Meal) => void;
+  readonly onDelete?: (mealToDelete: Meal) => void;
+  readonly isEditMode?: boolean;
 }
 
 export interface MealSummapryProps {
