@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import type { SubmitHandler } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,11 +33,11 @@ const productSchema = z.object({
 export type ProductFormValues = z.infer<typeof productSchema>;
 
 interface Props {
-  onSubmit: (values: ProductFormValues) => void;
+  onSubmit: SubmitHandler<ProductFormValues>;
 }
 
 export function ProductForm({ onSubmit }: Props) {
-  const form = useForm<ProductFormValues>({
+  const form = useForm({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "",
@@ -44,7 +45,7 @@ export function ProductForm({ onSubmit }: Props) {
       fat: 0,
       carbs: 0,
     },
-  });
+  }) as ReturnType<typeof useForm<ProductFormValues>>;
 
   return (
     <Form {...form}>

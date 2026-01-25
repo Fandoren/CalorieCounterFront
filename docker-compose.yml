@@ -1,0 +1,13 @@
+services:
+  calorie-counter-front:
+    build: .
+    container_name: calorie-counter-front
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - localweb
+
+networks:
+  localweb:
+    external: true
