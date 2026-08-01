@@ -4,11 +4,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useProduct } from "@/features/products/hooks";
 import Loader from "@/components/common/loader/Loader";
 import DeleteProductDialog from "@/features/products/components/DeleteProductDialog";
+import { useEffect, useState } from "react";
+import { fetchMealsCountWithProduct } from "../api";
 
 export default function ProductCard() {
   const { id } = useParams<{ id: string }>();
+  const [mealsCount, setMealsCount] = useState<number | null>(null);
   const navigate = useNavigate();
   const { product, loading, error } = useProduct(Number(id));
+
+  async function fetchMealsWithProductCount() {
+    try {
+      const count = await fetchMealsCountWithProduct(Number(id));
+      setMealsCount(count);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchMealsWithProductCount();
+  }, []);
 
   if (loading) return <Loader />;
 
@@ -52,6 +68,7 @@ export default function ProductCard() {
         <DeleteProductDialog
           productId={product.id}
           productName={product.name}
+          mealsCount={mealsCount}
         />
       </div>
 
@@ -83,12 +100,15 @@ export default function ProductCard() {
                 <div className="text-sm text-muted-foreground">Калории</div>
                 <div className="text-lg font-semibold">
                   {Math.round(
-                    product.protein * 4 + product.fat * 9 + product.carbs * 4
+                    product.protein * 4 + product.fat * 9 + product.carbs * 4,
                   )}{" "}
                   ккал
                 </div>
               </div>
             </div>
+            <p className="text-muted-foreground">
+              Количество приёмов пищи с данным продуктов: {mealsCount}
+            </p>
           </div>
         </CardContent>
       </Card>

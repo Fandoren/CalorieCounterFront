@@ -9,17 +9,19 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { deleteProduct } from "@/features/products/api";
+import { deleteProduct, deleteProductFromMeals } from "@/features/products/api";
 import { useNavigate } from "react-router";
 
 interface DeleteProductDialogProps {
   productId: number;
   productName: string;
+  mealsCount: number | null;
 }
 
 export default function DeleteProductDialog({
   productId,
   productName,
+  mealsCount
 }: DeleteProductDialogProps) {
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -28,6 +30,7 @@ export default function DeleteProductDialog({
   const handleDelete = async () => {
     try {
       setDeleting(true);
+      await deleteProductFromMeals(productId);
       await deleteProduct(productId);
       setOpen(false);
       navigate("/products");
@@ -48,9 +51,8 @@ export default function DeleteProductDialog({
         <DialogHeader>
           <DialogTitle>Удалить продукт?</DialogTitle>
           <DialogDescription>
-            Это действие нельзя отменить. Продукт{" "}
-            <span className="font-semibold">{productName}</span> будет удалён
-            навсегда.
+            Данное действие удалит Продукт <span className="font-semibold">{productName + ' '}</span> 
+            из {mealsCount} приёмов пищи. Это действие нельзя отменить. 
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
