@@ -6,7 +6,7 @@ import Loader from "@/components/common/loader/Loader";
 import DeleteProductDialog from "@/features/products/components/DeleteProductDialog";
 import { useEffect, useState } from "react";
 import { fetchMealsCountWithProduct } from "../api";
-import { calculateCalories, caloriesToCCal, ccalToCalories } from "@/lib/utils";
+import { calculateCalories, caloriesToCCal } from "@/lib/utils";
 
 export default function ProductCard() {
   const { id } = useParams<{ id: string }>();
@@ -104,7 +104,7 @@ export default function ProductCard() {
               <div className="p-3 rounded-lg bg-accent text-center">
                 <div className="text-sm text-muted-foreground">Калории</div>
                 <div className="text-lg font-semibold">
-                  {calculateCalories(protein, fat, carbs)} ккал
+                  {calculateCalories(product?.protein, product?.fat, product?.carbs)} ккал
                 </div>
               </div>
             </div>

@@ -37,6 +37,9 @@ export interface MealProduct {
     readonly id?: number;
     readonly grams: number;
     readonly calories: number;
+    readonly protein: number;
+    readonly fat: number;
+    readonly carbs: number;
     readonly product: Product;
 }
 
@@ -55,6 +58,7 @@ export interface MealListProps {
 export interface MealSummapryProps {
  totalCalories: number;
   hasMeals: boolean;
+  meals?: Meal[];
 }
 
 export interface ProductFormProps {

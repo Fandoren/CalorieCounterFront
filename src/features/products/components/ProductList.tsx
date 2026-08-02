@@ -8,11 +8,7 @@ interface Props {
 }
 
 let countCalories = (protein: number, fat: number, carbs: number) => {
-  let proteinVal = caloriesToCCal(protein);
-  let fatVal = caloriesToCCal(fat);
-  let carbsVal = caloriesToCCal(carbs);
-
-  return calculateCalories(proteinVal, fatVal, carbsVal);
+  return calculateCalories(protein, fat, carbs);
 };
 
 export function ProductList({ products }: Props) {

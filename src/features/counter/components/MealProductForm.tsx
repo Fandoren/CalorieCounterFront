@@ -7,6 +7,7 @@ import { MealProduct } from "../types";
 import { MealProductSelect } from "./MealProductSelect";
 import { Product } from "@/features/products/types";
 import { useCalories } from "../hooks";
+import { caloriesToCCal } from "@/lib/utils";
 
 export function MealProductForm({
   onAdd,
@@ -18,12 +19,14 @@ export function MealProductForm({
   const [newProduct, setNewProduct] = useState<MealProduct>({
     grams: 0,
     calories: 0,
+    protein: 0,
+    fat: 0,
+    carbs: 0,
     product: { id: 0, name: "", protein: 0, fat: 0, carbs: 0 },
   });
 
   const [manualCalories, setManualCalories] = useState(false);
 
-  // Используем хук для автоматического расчёта калорий
   const calculatedCalories = useCalories(
     newProduct.product.id !== 0 ? newProduct.product : null,
     newProduct.grams,
@@ -31,7 +34,6 @@ export function MealProductForm({
     newProduct.calories
   );
 
-  // Обновляем calories автоматически, если не вручную
   useEffect(() => {
     if (!manualCalories) {
       setNewProduct((prev) => ({ ...prev, calories: calculatedCalories }));
@@ -53,12 +55,22 @@ export function MealProductForm({
   const resetForm = () => {
     setManualCalories(false);
     setNewProduct({
-      id: 0,
       grams: 0,
       calories: 0,
+      protein: 0,
+      fat: 0,
+      carbs: 0,
       product: { id: 0, name: "", protein: 0, fat: 0, carbs: 0 },
     });
   };
+
+  const displayedProtein = caloriesToCCal(newProduct.product.protein);
+  const displayedFat = caloriesToCCal(newProduct.product.fat);
+  const displayedCarbs = caloriesToCCal(newProduct.product.carbs);
+
+  const portionProtein = (displayedProtein * newProduct.grams) / 100;
+  const portionFat = (displayedFat * newProduct.grams) / 100;
+  const portionCarbs = (displayedCarbs * newProduct.grams) / 100;
 
   return (
     <Card className="mb-4 p-4 space-y-3">
@@ -69,7 +81,10 @@ export function MealProductForm({
             setNewProduct((prev) => ({
               ...prev,
               product,
-              calories: 0, // сбрасываем, чтобы хук пересчитал
+              protein: product.protein,
+              fat: product.fat,
+              carbs: product.carbs,
+              calories: 0,
             }));
           }}
         />
@@ -90,6 +105,24 @@ export function MealProductForm({
           }
         />
       </div>
+
+      {/* Нутриенты для выбранного количества */}
+      {newProduct.product.id !== 0 && newProduct.grams > 0 && (
+        <div className="bg-muted p-3 rounded text-sm space-y-1">
+          <div className="flex justify-between">
+            <span>Белки:</span>
+            <span>{portionProtein.toFixed(1)}г</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Жиры:</span>
+            <span>{portionFat.toFixed(1)}г</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Углеводы:</span>
+            <span>{portionCarbs.toFixed(1)}г</span>
+          </div>
+        </div>
+      )}
 
       <div>
         <div className="flex items-center justify-between mb-1">

@@ -12,9 +12,8 @@ export function useCalories(
 
     const factor = grams / 100;
 
-    // Рассчитываем калории из нутриентов продукта
     return Math.round(
-      (baseProduct.protein * 4 + baseProduct.fat * 9 + baseProduct.carbs * 4) *
+      ((baseProduct.protein * 4 + baseProduct.fat * 9 + baseProduct.carbs * 4) / 100) *
         factor
     );
   }, [baseProduct, grams, manual, manualValue]);

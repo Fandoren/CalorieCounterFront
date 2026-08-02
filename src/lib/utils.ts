@@ -38,5 +38,5 @@ export function calculateCalories(
   let fatVal = fat ? fat * 9 : 0;
   let carbsVal = carbs ? carbs * 4 : 0;
 
-  return Math.round(proteinVal + fatVal + carbsVal);
+  return Math.round((proteinVal + fatVal + carbsVal) / 100);
 }

@@ -142,6 +142,7 @@ export default function DailyCounter() {
             <MealSummary
               totalCalories={totalCalories}
               hasMeals={meals.length > 0}
+              meals={meals}
             />
           </div>
         </>
