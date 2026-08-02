@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
-import { NumericFormat } from "react-number-format";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { Input } from "@/components/ui/input";
 
 interface DecimalInputProps {
@@ -26,7 +26,7 @@ export const DecimalInput = forwardRef<HTMLInputElement, DecimalInputProps>(
         allowLeadingZeros={false}
         onValueChange={(vals) => {
           let val = vals.value.replace(",", "."); // заменяем запятую на точку
-          const num = val === "" ? undefined : parseFloat(val);
+          const num = val === "" ? undefined : Number.parseFloat(val);
           onChange?.(num);
         }}
         customInput={Input}

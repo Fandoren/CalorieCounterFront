@@ -45,18 +45,16 @@ export default function HistoryCalendarDay({
   norm = 2000,
 }: HistoryCalendarDayProps) {  
   const bg = getGradient(calories, norm);
+  const defaultClasses = "w-24 h-24 m-1 flex flex-col items-center justify-center rounded-full text-sm cursor-pointer select-none transition-all text-white font-semibold"; 
 
   return (
     <>
       <div
-        className={cn(
-          "w-24 h-24 m-1 flex flex-col items-center justify-center rounded-full text-sm cursor-pointer select-none transition-all text-white font-semibold",
-          isToday && "ring-4 ring-primary",
-          !isCurrentMonth && "opacity-40"
-        )}
+        className={isCurrentMonth 
+          ? cn(defaultClasses, isToday && "ring-4 ring-primary") 
+          : "invisible"}
         style={{
-          background: bg,
-          opacity: calories === 0 ? 0.5 : 1,
+          background: bg
         }}
         onClick={onClick}
       >

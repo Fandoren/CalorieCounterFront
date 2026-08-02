@@ -3,15 +3,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ProductForm, ProductFormValues } from "../components/ProductForm";
 import { Button } from "@/components/ui/button";
 import { createProduct } from "../api";
+import { ccalToCalories } from "@/lib/utils";
 
 export default function ProductCreate() {
   const navigate = useNavigate();
 
   const handleSubmit = async (values: ProductFormValues) => {
+    const payload = {
+      name: values.name,
+      protein: ccalToCalories(values.protein),
+      fat: ccalToCalories(values.fat),
+      carbs: ccalToCalories(values.carbs),
+    };
     try {
-      const created = await createProduct(values);
+      const created = await createProduct(payload);
       console.log("Создан продукт:", created);
-      // после успешного создания → редирект на список продуктов
+
       navigate("/products");
     } catch (err) {
       console.error("Ошибка при создании продукта", err);

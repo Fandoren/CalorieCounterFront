@@ -19,15 +19,9 @@ import { Input } from "@/components/ui/input";
 
 const productSchema = z.object({
   name: z.string().min(2, "Название слишком короткое"),
-  protein: z
-    .transform((val) => Number(String(val).replace(",", ".")))
-    .pipe(z.number().min(0, "Белки должны быть неотрицательными")),
-  fat: z
-    .transform((val) => Number(String(val).replace(",", ".")))
-    .pipe(z.number().min(0, "Жиры должны быть неотрицательными")),
-  carbs: z
-    .transform((val) => Number(String(val).replace(",", ".")))
-    .pipe(z.number().min(0, "Углеводы должны быть неотрицательными")),
+  protein: z.number().min(0, "Белки должны быть неотрицательными"),
+  fat: z.number().min(0, "Жиры должны быть неотрицательными"),
+  carbs: z.number().min(0, "Углеводы должны быть неотрицательными"),
 });
 
 export type ProductFormValues = z.infer<typeof productSchema>;

@@ -3,12 +3,12 @@ import { Product } from "./types";
 export async function fetchProductsPage(
   page: number,
   limit: number,
-  search: string
+  search: string,
 ): Promise<{ data: Product[]; total: number; totalPages?: number }> {
   const res = await fetch(
     `/api/products/page?page=${page}&limit=${limit}&search=${encodeURIComponent(
-      search
-    )}`
+      search,
+    )}`,
   );
   if (!res.ok) throw new Error("Ошибка при загрузке продуктов");
   try {
@@ -37,7 +37,7 @@ export async function fetchProductById(id: number): Promise<Product | null> {
 }
 
 export async function createProduct(
-  product: Omit<Product, "id">
+  product: Omit<Product, "id">,
 ): Promise<Product> {
   const res = await fetch(`/api/products`, {
     method: "POST",
@@ -52,6 +52,38 @@ export async function createProduct(
   }
 
   return await res.json();
+}
+
+export async function fetchMealsCountWithProduct(
+  productId: number,
+): Promise<number | null> {
+  const res = await fetch(`/api/products/${productId}/meals/count`);
+
+  if (res.status === 404) {
+    return null;
+  }
+
+  if (!res.ok) {
+    throw new Error(
+      `Ошибка при загрузке списка приёмов пищи с продуктом: ${res.status}`,
+    );
+  }
+
+  try {
+    return await res.json();
+  } catch {
+    throw new Error("Неверный формат ответа от сервера");
+  }
+}
+
+export async function deleteProductFromMeals(productId: number): Promise<void> {
+  const res = await fetch(`/api/products/${productId}/meals`, {
+    method: "DELETE"
+  });
+
+  if (!res.ok) {
+    throw new Error("Ошибка при удалении продукта из приёмов пищи");
+  }
 }
 
 export async function deleteProduct(id: number): Promise<void> {

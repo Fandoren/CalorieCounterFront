@@ -6,6 +6,7 @@ import Loader from "@/components/common/loader/Loader";
 import DeleteProductDialog from "@/features/products/components/DeleteProductDialog";
 import { useEffect, useState } from "react";
 import { fetchMealsCountWithProduct } from "../api";
+import { calculateCalories, caloriesToCCal, ccalToCalories } from "@/lib/utils";
 
 export default function ProductCard() {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +22,10 @@ export default function ProductCard() {
       console.error(err);
     }
   }
+
+  let protein = caloriesToCCal(product?.protein);
+  let fat = caloriesToCCal(product?.fat);
+  let carbs = caloriesToCCal(product?.carbs);
 
   useEffect(() => {
     fetchMealsWithProductCount();
@@ -84,25 +89,22 @@ export default function ProductCard() {
               {product.description ?? "Описание отсутствует"}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-              <div className="p-3 rounded-lg bg-accent text-center">
-                <div className="text-sm text-muted-foreground">Белки</div>
-                <div className="text-lg font-semibold">{product.protein} г</div>
+              <div className="p-3 rounded-lg bg-protein text-center">
+                <div className="font-bold">Белки</div>
+                <div className="text-lg font-semibold">{protein} г</div>
               </div>
-              <div className="p-3 rounded-lg bg-accent text-center">
-                <div className="text-sm text-muted-foreground">Жиры</div>
-                <div className="text-lg font-semibold">{product.fat} г</div>
+              <div className="p-3 rounded-lg bg-fat text-center">
+                <div className="font-bold">Жиры</div>
+                <div className="text-lg font-semibold">{fat} г</div>
               </div>
-              <div className="p-3 rounded-lg bg-accent text-center">
-                <div className="text-sm text-muted-foreground">Углеводы</div>
-                <div className="text-lg font-semibold">{product.carbs} г</div>
+              <div className="p-3 rounded-lg bg-carbs text-center">
+                <div className="font-bold">Углеводы</div>
+                <div className="text-lg font-semibold">{carbs} г</div>
               </div>
               <div className="p-3 rounded-lg bg-accent text-center">
                 <div className="text-sm text-muted-foreground">Калории</div>
                 <div className="text-lg font-semibold">
-                  {Math.round(
-                    product.protein * 4 + product.fat * 9 + product.carbs * 4,
-                  )}{" "}
-                  ккал
+                  {calculateCalories(protein, fat, carbs)} ккал
                 </div>
               </div>
             </div>

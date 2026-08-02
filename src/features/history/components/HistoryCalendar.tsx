@@ -16,7 +16,7 @@ export default function HistoryCalendar() {
   const [currentMonth, setCurrentMonth] = useState(dayjs());
   const [isNextMonthDisabled, setIsNextMonthDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [historyData, setHistoryData] = useState<HistoryCalendarData[]>([]);
+  const [historyData, setHistoryData] = useState< HistoryCalendarData[]>([]);
   const [historyDayDialogOpen, setHistoryDayDialogOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState<dayjs.Dayjs | null>(null);
 
