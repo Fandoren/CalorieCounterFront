@@ -92,7 +92,7 @@ export default function DailyCounter() {
               <Plus className="mr-2 h-4 w-4" /> Добавить приём пищи
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
                 {editingMeal ? "Редактировать приём пищи" : "Новый приём пищи"}

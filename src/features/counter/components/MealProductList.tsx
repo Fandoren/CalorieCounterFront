@@ -25,7 +25,7 @@ export function MealProductList({
         return (
           <Card key={p.id}>
             <CardContent className="flex flex-col gap-2 pt-4">
-              <div className="flex items-center justify-between">
+              <div className="flex justify-between">
                 <span>
                   {p.product.name} ({p.grams} г)
                 </span>
@@ -35,8 +35,7 @@ export function MealProductList({
                 <span>Б: {portionProtein.toFixed(1)}г</span>
                 <span>Ж: {portionFat.toFixed(1)}г</span>
                 <span>У: {portionCarbs.toFixed(1)}г</span>
-              </div>
-              <div className="flex justify-end">
+                
                 <Button
                   size="sm"
                   variant="ghost"

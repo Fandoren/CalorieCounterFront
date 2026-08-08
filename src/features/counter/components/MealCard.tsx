@@ -18,12 +18,11 @@ export const MealCard = ({
   onDelete,
   isEditMode,
 }: MealCardProps) => {
-  const dateStr = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${year}`;
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-3">
         <CardTitle className="text-lg font-semibold">
-          {dateStr} {mealTime} – {name}
+          {mealTime} – {name}
         </CardTitle>
 
         <div className="flex items-center gap-1">
